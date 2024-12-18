@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DefectStatisticsApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e407f7ae72bc6c16aee51342ff9ce378560a9228")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8f2a925e93c43a134b7166bc1ca46d46541cb005")]
 [assembly: System.Reflection.AssemblyProductAttribute("DefectStatisticsApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DefectStatisticsApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

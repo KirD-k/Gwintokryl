@@ -24,6 +24,7 @@ namespace DefectStatisticsApp
 
             //this.SizeChanged += (s, e) => DrawGraph();
             this.SizeChanged += (s, e) => core.drawAxes();
+
             //DrawGraph();
             core.drawAxes();
         }
@@ -55,9 +56,14 @@ namespace DefectStatisticsApp
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void setOridinBtnClick(object sender, RoutedEventArgs e)
         {
-            core.drawAxes();
+
+        }
+
+        private void calcDefectsGraph(object sender, RoutedEventArgs e)
+        {
+            core.drawGraph();
         }
     }
 }

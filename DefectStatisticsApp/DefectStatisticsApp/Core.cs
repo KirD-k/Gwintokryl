@@ -14,10 +14,13 @@ namespace DefectStatisticsApp
 {
     class Core
     {
-        private float ei { get; set; }
-        private float es { get; set; }
-        private float xAvg { get; set; }
-        private float stdDeviation { get; set; }
+        private double ei { get; set; }
+        private double es { get; set; }
+        private double xAvg { get; set; }
+        private double stdDeviation { get; set; }
+
+        private const double e = Math.E;
+        private const double pi = Math.PI;
 
         Canvas canvas { get; set; }
         Point origin { get; set; }
@@ -28,8 +31,7 @@ namespace DefectStatisticsApp
         {
             //определяем новый холст и начало координат
             canvas = graphCanvas;
-            var a = canvas.Width;
-            origin = new Point(x:0, y:0);
+            origin = new Point(x: ((int)canvas.ActualWidth/2), y: ((int)canvas.ActualHeight/2));
 
             //определяем начальные значения величин
             ei = 0.002f;
@@ -38,9 +40,44 @@ namespace DefectStatisticsApp
             stdDeviation = 0.009f;
         }
 
-        public void calcP()
+        public double calcProbDistribution(int x)
         {
+            double phi = Math.Pow(e, -(x - xAvg) * (x - xAvg) / (2 * stdDeviation * stdDeviation));
+            phi /= stdDeviation * Math.Sqrt(2 * pi);
 
+            return phi;
+        }
+
+        public void drawGraph()
+        {
+            canvas.Children.Clear();
+            drawAxes();
+
+            for (int x = ((int)-canvas.ActualWidth / 2); x < canvas.ActualWidth/2; x++)
+            {
+                Line line = new Line
+                {
+                    X1 = x,
+                    Y1 = - calcProbDistribution(x)*6,
+                    X2 = x + 1,
+                    Y2 = - calcProbDistribution(x + 1)*6,
+                    Stroke = Brushes.Blue,
+                    StrokeThickness = 2
+                };
+
+                line.X1 += origin.X;
+                line.Y1 += origin.Y;
+
+                line.X2 += origin.X;
+                line.Y2 += origin.Y;
+
+                canvas.Children.Add(line);
+            }
+        }
+
+        public void updateOrigin()
+        {
+            origin = new Point(x: ((int)canvas.ActualWidth / 2), y: ((int)canvas.ActualHeight / 2));
         }
 
         /// <summary>
@@ -48,23 +85,30 @@ namespace DefectStatisticsApp
         /// </summary>
         public void drawAxes()
         {
-            canvas.Children.Clear();
+            updateOrigin();
+
+            try
+            {
+                canvas.Children.RemoveAt(0);
+                canvas.Children.RemoveAt(1);
+            }
+            catch { }
 
             //создаём объекты осей
             Line oX = new Line();
             Line oY = new Line();
-
+            
 
             //ось Х
             oX.X1 = 0;
-            oX.Y1 = canvas.ActualHeight/2;
+            oX.Y1 = origin.Y;
 
             oX.X2 = canvas.ActualWidth;
             oX.Y2 = oX.Y1;
 
 
             //ось Y
-            oY.X1 = canvas.ActualWidth/2;
+            oY.X1 = origin.X;
             oY.Y1 = 0;
 
             oY.X2 = oY.X1;
@@ -77,8 +121,8 @@ namespace DefectStatisticsApp
             oY.StrokeThickness = 1;
 
             //отрисовать оси
-            canvas.Children.Add(oX);
-            canvas.Children.Add(oY);
+            canvas.Children.Insert(0, oX);
+            canvas.Children.Insert(1, oY);
         }
     }
 }
