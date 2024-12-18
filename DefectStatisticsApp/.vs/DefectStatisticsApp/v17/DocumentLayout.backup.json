@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\\u041A\u0438\u0440\u0438\u043B\u043B\\Desktop\\5_\u0441\u0435\u043C\u0435\u0441\u0442\u0440\\Gwintokryl\\DefectStatisticsApp\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{75FB3FC1-729A-4585-9813-C4AA36578309}|DefectStatisticsApp\\DefectStatisticsApp.csproj|c:\\users\\\u043A\u0438\u0440\u0438\u043B\u043B\\desktop\\5_\u0441\u0435\u043C\u0435\u0441\u0442\u0440\\gwintokryl\\defectstatisticsapp\\defectstatisticsapp\\core.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{75FB3FC1-729A-4585-9813-C4AA36578309}|DefectStatisticsApp\\DefectStatisticsApp.csproj|solutionrelative:defectstatisticsapp\\core.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{75FB3FC1-729A-4585-9813-C4AA36578309}|DefectStatisticsApp\\DefectStatisticsApp.csproj|c:\\users\\\u043A\u0438\u0440\u0438\u043B\u043B\\desktop\\5_\u0441\u0435\u043C\u0435\u0441\u0442\u0440\\gwintokryl\\defectstatisticsapp\\defectstatisticsapp\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{75FB3FC1-729A-4585-9813-C4AA36578309}|DefectStatisticsApp\\DefectStatisticsApp.csproj|solutionrelative:defectstatisticsapp\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -18,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -30,7 +34,33 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Core.cs",
+              "DocumentMoniker": "C:\\Users\\\u041A\u0438\u0440\u0438\u043B\u043B\\Desktop\\5_\u0441\u0435\u043C\u0435\u0441\u0442\u0440\\Gwintokryl\\DefectStatisticsApp\\DefectStatisticsApp\\Core.cs",
+              "RelativeDocumentMoniker": "DefectStatisticsApp\\Core.cs",
+              "ToolTip": "C:\\Users\\\u041A\u0438\u0440\u0438\u043B\u043B\\Desktop\\5_\u0441\u0435\u043C\u0435\u0441\u0442\u0440\\Gwintokryl\\DefectStatisticsApp\\DefectStatisticsApp\\Core.cs",
+              "RelativeToolTip": "DefectStatisticsApp\\Core.cs",
+              "ViewState": "AgIAACYAAAAAAAAAAAAUwDcAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-18T13:36:20.385Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\\u041A\u0438\u0440\u0438\u043B\u043B\\Desktop\\5_\u0441\u0435\u043C\u0435\u0441\u0442\u0440\\Gwintokryl\\DefectStatisticsApp\\DefectStatisticsApp\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "DefectStatisticsApp\\MainWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\\u041A\u0438\u0440\u0438\u043B\u043B\\Desktop\\5_\u0441\u0435\u043C\u0435\u0441\u0442\u0440\\Gwintokryl\\DefectStatisticsApp\\DefectStatisticsApp\\MainWindow.xaml.cs",
+              "RelativeToolTip": "DefectStatisticsApp\\MainWindow.xaml.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAADsAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-18T12:17:44.267Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "C:\\Users\\\u041A\u0438\u0440\u0438\u043B\u043B\\Desktop\\5_\u0441\u0435\u043C\u0435\u0441\u0442\u0440\\Gwintokryl\\DefectStatisticsApp\\DefectStatisticsApp\\MainWindow.xaml",
               "RelativeDocumentMoniker": "DefectStatisticsApp\\MainWindow.xaml",
@@ -38,19 +68,6 @@
               "RelativeToolTip": "DefectStatisticsApp\\MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2024-12-18T12:17:46.576Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\\u041A\u0438\u0440\u0438\u043B\u043B\\Desktop\\5_\u0441\u0435\u043C\u0435\u0441\u0442\u0440\\Gwintokryl\\DefectStatisticsApp\\DefectStatisticsApp\\MainWindow.xaml.cs",
-              "RelativeDocumentMoniker": "DefectStatisticsApp\\MainWindow.xaml.cs",
-              "ToolTip": "C:\\Users\\\u041A\u0438\u0440\u0438\u043B\u043B\\Desktop\\5_\u0441\u0435\u043C\u0435\u0441\u0442\u0440\\Gwintokryl\\DefectStatisticsApp\\DefectStatisticsApp\\MainWindow.xaml.cs",
-              "RelativeToolTip": "DefectStatisticsApp\\MainWindow.xaml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-18T12:17:44.267Z",
               "EditorCaption": ""
             }
           ]
