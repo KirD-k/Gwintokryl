@@ -10,6 +10,13 @@
         <Style TargetType="Button">
             <Setter Property="FontSize" Value="16"/>
         </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="10 0 10 0"/>
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="10 10 10 0"/>
+        </Style>
+        
     </Window.Resources>
     <Grid>
         <Grid>
@@ -24,27 +31,46 @@
             </Grid.RowDefinitions>
             
             <StackPanel Grid.Column="0" Grid.RowSpan="3"
+                        x:Name="myPanel"
                         Background="BlanchedAlmond">
-                <TextBox x:Name="textbox1" Margin="10 10 10 0"/>
-                <TextBox x:Name="textbox2" Margin="10 10 10 0"/>
+                <Label Content="ei"/>
+                <TextBox x:Name="txbEI" 
+                         Text="{Binding Path=txbEI}"/>
+                
+                <Label Content="es"/>
+                <TextBox x:Name="txbES" 
+                         Text="{Binding Path=txbES}"/>
+                
+                <Label Content="sigma"/>
+                <TextBox x:Name="txbSigma" 
+                         Text="{Binding Path=txbSigma}"/>
+                
+                <Label Content="Мат. ожидание"/>
+                <TextBox x:Name="txbXavg" 
+                         Text="{Binding Path=txbXAvg}"/>
+                
                 <Button Content="Посчитать" 
-                        Click="calcDefectsGraph"
-                        Margin="10 10 10 0"/>
-                <TextBox x:Name="textbox3" Margin="10 10 10 0"/>
-                <Button Content="Set origin" 
-                        Click="setOridinBtnClick"
                         Margin="10 10 10 0"/>
                 
+                <Label Content="X"/>
+                <TextBox x:Name="txbOriginX"
+                         Text="0"/>
+                
+                <Label Content="Y"/>
+                <TextBox x:Name="txbOriginY"
+                         Text="0"/>
+
             </StackPanel>
             
             <Canvas x:Name="graphCanvas" 
-                   Grid.Column="1" Grid.Row="1"
+                    Grid.Column="1" Grid.Row="1"
                     Background="AliceBlue"/>
             
             <Rectangle Grid.Column="2" Grid.Row="2" 
                        Fill="LightGray">
             </Rectangle>
             <Label Grid.Column="1" Grid.Row="2"
+                   x:Name="lbGraphStatus"
                    Content="Статус графика"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Left"/>

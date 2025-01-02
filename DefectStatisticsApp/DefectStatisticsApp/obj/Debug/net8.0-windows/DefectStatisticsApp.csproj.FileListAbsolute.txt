@@ -19,3 +19,5 @@ C:\Users\Кирилл\Desktop\5_семестр\Gwintokryl\DefectStatisticsApp\De
 C:\Users\Кирилл\Desktop\5_семестр\Gwintokryl\DefectStatisticsApp\DefectStatisticsApp\obj\Debug\net8.0-windows\DefectStatisticsApp.pdb
 C:\Users\Кирилл\Desktop\5_семестр\Gwintokryl\DefectStatisticsApp\DefectStatisticsApp\obj\Debug\net8.0-windows\DefectStatisticsApp.genruntimeconfig.cache
 C:\Users\Кирилл\Desktop\5_семестр\Gwintokryl\DefectStatisticsApp\DefectStatisticsApp\obj\Debug\net8.0-windows\ref\DefectStatisticsApp.dll
+C:\Users\Кирилл\Desktop\5_семестр\Gwintokryl\DefectStatisticsApp\DefectStatisticsApp\obj\Debug\net8.0-windows\DefectStatisticsApp.Properties.Resources.resources
+C:\Users\Кирилл\Desktop\5_семестр\Gwintokryl\DefectStatisticsApp\DefectStatisticsApp\obj\Debug\net8.0-windows\DefectStatisticsApp.csproj.GenerateResource.cache

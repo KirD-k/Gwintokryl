@@ -16,54 +16,43 @@ namespace DefectStatisticsApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        Core core;
+        CorePC corePC;
         public MainWindow()
         {
             InitializeComponent();
-            core = new Core(graphCanvas);
 
-            //this.SizeChanged += (s, e) => DrawGraph();
-            this.SizeChanged += (s, e) => core.drawAxes();
+            corePC = new CorePC(graphCanvas);
+            myPanel.DataContext = corePC;
+            //Перерисовка графика при изменении размеров экрана
+            //this.SizeChanged += (s, e) => DrawGraph(core.graphArr, core.vertLinesDict);
+            this.SizeChanged += (s, e) => upd();
 
-            //DrawGraph();
-            core.drawAxes();
+            //Масштабирование графика колесом мышки
+            this.graphCanvas.MouseWheel += (s, e) => corePC.ChangeScaleOnMouseWheel(s, e);
+
+            //Обновление значенией в ядре при нажатии клавиши Enter во время ввода в TextBox
+            this.txbEI.KeyDown += (s, e) => corePC.OnKeyEnterDown(s, e);
+            this.txbES.KeyDown += (s, e) => corePC.OnKeyEnterDown(s, e);
+            this.txbSigma.KeyDown += (s, e) => corePC.OnKeyEnterDown(s, e);
+            this.txbXavg.KeyDown += (s, e) => corePC.OnKeyEnterDown(s, e);
+
+            
+
+            //DrawGraph(core.graphArr, core.vertLinesDict);
+
+
+
         }
 
-        
-
-        private void DrawGraph()
+        public void upd()
         {
-            graphCanvas.Children.Clear();
-
-            double amplitude = this.Height / 5; // Амплитуда синуса
-            double frequency = 0.1; // Волнистость синуса
-            double offsetX = 50; // Смещение по оси X
-            double offsetY = 200; // Смещение по оси Y
-
-            for (double x = 0; x < 500; x += 3)
-            {
-                double y = amplitude * Math.Sin(frequency * x);
-                Line line = new Line
-                {
-                    X1 = x + offsetX,
-                    Y1 = offsetY - y,
-                    X2 = x + 1 + offsetX,
-                    Y2 = offsetY - amplitude * Math.Sin(frequency * (x + 1)),
-                    Stroke = Brushes.Blue,
-                    StrokeThickness = 2
-                };
-                graphCanvas.Children.Add(line);
-            }
+            corePC.resize();
+            this.lbGraphStatus.Content 
+                = $"Статус графика: {((int)graphCanvas.ActualHeight)} x {((int)graphCanvas.ActualWidth)}";
         }
 
-        private void setOridinBtnClick(object sender, RoutedEventArgs e)
-        {
 
-        }
 
-        private void calcDefectsGraph(object sender, RoutedEventArgs e)
-        {
-            core.drawGraph();
-        }
+
     }
 }
