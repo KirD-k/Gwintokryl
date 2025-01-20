@@ -13,23 +13,40 @@ namespace DefectStatisticsApp
 {
     class CorePC : Core
     {
-        public string txbES { get => es.ToString(); set => es = Convert.ToDouble(value); }
-        public string txbEI { get => ei.ToString(); set => ei = Convert.ToDouble(value); }
-        public string txbXAvg { get => xAvg.ToString(); set => xAvg = Convert.ToDouble(value); }
-        public string txbSigma { get => sigma.ToString(); set => sigma = Convert.ToDouble(value); }
-        private Canvas canvas { get; set; }
+        public string TxbES { get => Es.ToString(); set => Es = Convert.ToDouble(value); }
+        public string TxbEI { get => Ei.ToString(); set => Ei = Convert.ToDouble(value); }
+        public string TxbXAvg { get => XAvg.ToString(); set => XAvg = Convert.ToDouble(value); }
+        public string TxbSigma { get => Sigma.ToString(); set => Sigma = Convert.ToDouble(value); }
+        public string TxbOffsetX
+        {
+            get => Offset.X.ToString(); set
+            {
+                Offset = new Point(Convert.ToDouble(value), Offset.Y);
+            }
+        }
+        public string TxbOffsetY
+        {
+            get => Offset.Y.ToString(); set
+            {
+                Offset = new Point(Offset.X, Convert.ToDouble(value));
+            }
+        }
+
+        private Canvas Canvas { get; set; }
 
         public CorePC(Canvas canv)
         {
-            canvas = canv;
+            Canvas = canv;
+            PointsChanged += DrawGraph;
         }
 
-        public void resize()
+        /// <summary>
+        /// Обновление ширины и высоты рисунка
+        /// </summary>
+        public void UpdateSize()
         {
-            GraphHeight = canvas.ActualHeight;
-            GraphWidth = canvas.ActualWidth;
-            origin = new Point(canvas.ActualHeight/2, canvas.ActualWidth/2);
-            DrawGraph();
+            GraphHeight = Canvas.ActualHeight;
+            GraphWidth = Canvas.ActualWidth;
         }
 
         /// <summary>
@@ -38,7 +55,7 @@ namespace DefectStatisticsApp
         /// <param name="points"></param>
         /// <param name="color"></param>
         /// <param name="thickness"></param>
-        private void drawLines(Point[] points, SolidColorBrush color, int thickness)
+        private void DrawLines(Point[] points, SolidColorBrush color, int thickness)
         {
             Line line = new Line
             {
@@ -50,7 +67,7 @@ namespace DefectStatisticsApp
                 StrokeThickness = thickness
             };
 
-            canvas.Children.Add(line);
+            Canvas.Children.Add(line);
         }
 
         /// <summary>
@@ -59,37 +76,37 @@ namespace DefectStatisticsApp
         public void DrawGraph()
         {
             //Очищаем холст
-            canvas.Children.Clear();
+            Canvas.Children.Clear();
 
             //Отрисовка осей координат
-            drawLines(vertLinesDict["ox"], Brushes.Black, 1);
-            drawLines(vertLinesDict["oy"], Brushes.Black, 1);
+            DrawLines(VertLinesDict["ox"], Brushes.Black, 3);
+            DrawLines(VertLinesDict["oy"], Brushes.Black, 3);
 
             //Отрисовка вертикальных линий
-            drawLines(vertLinesDict["ei"], Brushes.Orange, 2);
-            drawLines(vertLinesDict["es"], Brushes.Orange, 2);
-            drawLines(vertLinesDict["xAvg"], Brushes.Red, 3);
-            drawLines(vertLinesDict["sigma+"], Brushes.Gray, 1);
-            drawLines(vertLinesDict["sigma-"], Brushes.Gray, 1);
+            DrawLines(VertLinesDict["ei"], Brushes.Orange, 2);
+            DrawLines(VertLinesDict["es"], Brushes.Orange, 2);
+            DrawLines(VertLinesDict["xAvg"], Brushes.Red, 3);
+            DrawLines(VertLinesDict["sigma+"], Brushes.Blue, 1);
+            DrawLines(VertLinesDict["sigma-"], Brushes.Blue, 1);
 
 
+            //Отрисовка графика нормального распределения вероятностей
             var graphColor = Brushes.Green;
             int graphThickness = 2;
 
-            //Отрисовка графика нормального распределения вероятностей
-            for (int i = 0; i < graphArr.Length-1; i++)
+            for (int i = 0; i < GraphArr.Length-1; i++)
             {
                 Line line = new Line
                 {
-                    X1 = graphArr[i].X,
-                    Y1 = graphArr[i].Y,
-                    X2 = graphArr[i + 1].X,
-                    Y2 = graphArr[i + 1].Y,
+                    X1 = GraphArr[i].X,
+                    Y1 = GraphArr[i].Y,
+                    X2 = GraphArr[i + 1].X,
+                    Y2 = GraphArr[i + 1].Y,
                     Stroke = graphColor,
                     StrokeThickness = graphThickness
                 };
 
-                canvas.Children.Add(line);
+                Canvas.Children.Add(line);
             }
         }
 
@@ -116,7 +133,21 @@ namespace DefectStatisticsApp
         /// <param name="e"></param>
         public void ChangeScaleOnMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            changeScale(e.Delta);
+            ChangeScale(e.Delta * 2.5);
+        }
+
+        /// <summary>
+        /// Перемещение центра координат щелчком ПКМ
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void ChangeOffsetOnMouseButtonRight(object sender, MouseButtonEventArgs e)
+        {
+            var pos = e.GetPosition(Canvas);
+            pos.X -= GraphWidth/2; 
+            pos.Y = -(pos.Y - GraphHeight / 2);
+            Offset = pos;
+            //PropertyChanged?.Invoke(this, new("offset"));
         }
     }
 }

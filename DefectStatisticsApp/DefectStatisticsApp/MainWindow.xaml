@@ -35,39 +35,48 @@
                         Background="BlanchedAlmond">
                 <Label Content="ei"/>
                 <TextBox x:Name="txbEI" 
-                         Text="{Binding Path=txbEI}"/>
+                         Text="{Binding Path=TxbEI}"/>
                 
                 <Label Content="es"/>
                 <TextBox x:Name="txbES" 
-                         Text="{Binding Path=txbES}"/>
+                         Text="{Binding Path=TxbES}"/>
                 
                 <Label Content="sigma"/>
                 <TextBox x:Name="txbSigma" 
-                         Text="{Binding Path=txbSigma}"/>
+                         Text="{Binding Path=TxbSigma}"/>
                 
                 <Label Content="Мат. ожидание"/>
                 <TextBox x:Name="txbXavg" 
-                         Text="{Binding Path=txbXAvg}"/>
-                
-                <Button Content="Посчитать" 
-                        Margin="10 10 10 0"/>
-                
+                         Text="{Binding Path=TxbXAvg}"/>
+
+                <TextBlock Margin="10 10 10 0"
+                           Text="Сдвиг центра координат по осям" 
+                           Height="40"
+                           
+                           />
                 <Label Content="X"/>
-                <TextBox x:Name="txbOriginX"
-                         Text="0"/>
+                <TextBox x:Name="txbOffsetX"
+                         Text="{Binding Path=TxbOffsetX}"/>
                 
                 <Label Content="Y"/>
-                <TextBox x:Name="txbOriginY"
-                         Text="0"/>
+                <TextBox x:Name="txbOffsetY"
+                         Text="{Binding Path=TxbOffsetY}"/>
 
             </StackPanel>
-            
+
+            <Rectangle Grid.Column="2" Grid.Row="0" 
+                       Fill="PaleTurquoise">
+
+            </Rectangle>
+
             <Canvas x:Name="graphCanvas" 
                     Grid.Column="1" Grid.Row="1"
+                    Panel.ZIndex="-1"
                     Background="AliceBlue"/>
             
             <Rectangle Grid.Column="2" Grid.Row="2" 
                        Fill="LightGray">
+                
             </Rectangle>
             <Label Grid.Column="1" Grid.Row="2"
                    x:Name="lbGraphStatus"
