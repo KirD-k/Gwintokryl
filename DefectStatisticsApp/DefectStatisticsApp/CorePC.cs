@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -13,31 +14,18 @@ namespace DefectStatisticsApp
 {
     class CorePC : Core
     {
-        public string TxbES { get => Es.ToString(); set => Es = Convert.ToDouble(value); }
-        public string TxbEI { get => Ei.ToString(); set => Ei = Convert.ToDouble(value); }
-        public string TxbXAvg { get => XAvg.ToString(); set => XAvg = Convert.ToDouble(value); }
-        public string TxbSigma { get => Sigma.ToString(); set => Sigma = Convert.ToDouble(value); }
-        public string TxbOffsetX
-        {
-            get => Offset.X.ToString(); set
-            {
-                Offset = new Point(Convert.ToDouble(value), Offset.Y);
-            }
-        }
-        public string TxbOffsetY
-        {
-            get => Offset.Y.ToString(); set
-            {
-                Offset = new Point(Offset.X, Convert.ToDouble(value));
-            }
-        }
-
+        //Переменная для доступа к холсту
         private Canvas Canvas { get; set; }
+        private Label LbDefects { get; set; }
 
-        public CorePC(Canvas canv)
+        public CorePC(Canvas canv, Label label)
         {
             Canvas = canv;
+            LbDefects = label;  
             PointsChanged += DrawGraph;
+            DefectsChanged += updateDefectText;
+            CalcDefects();
+            updateDefectText();
         }
 
         /// <summary>
@@ -78,6 +66,39 @@ namespace DefectStatisticsApp
             //Очищаем холст
             Canvas.Children.Clear();
 
+            int graphThickness = 2;
+            int hatchThickness = 1;
+            var graphColor = Brushes.Green;
+            var hatchBrush = new VisualBrush
+            {
+                TileMode = TileMode.Tile,
+                Viewport = new Rect(0, 0, 30, 30),
+                ViewportUnits = BrushMappingMode.Absolute,
+                Visual = new Path
+                {
+                    Stroke = Brushes.Black,
+                    StrokeThickness = hatchThickness,
+                    Data = new LineGeometry(new Point(0, 0), new Point(50, 50))
+                }
+            };
+
+            //Отрисовка областей брака
+            Polygon EiZone = new Polygon
+            {
+                StrokeThickness = 2,   // Толщина обводки
+                Fill = hatchBrush // Цвет заливки
+            };
+            EiZone.Points = new PointCollection(EiZoneArr);
+            Canvas.Children.Add(EiZone);
+
+            Polygon EsZone = new Polygon
+            {
+                StrokeThickness = 2,   // Толщина обводки
+                Fill = hatchBrush // Цвет заливки
+            };
+            EsZone.Points = new PointCollection(EsZoneArr);
+            Canvas.Children.Add(EsZone);
+
             //Отрисовка осей координат
             DrawLines(VertLinesDict["ox"], Brushes.Black, 3);
             DrawLines(VertLinesDict["oy"], Brushes.Black, 3);
@@ -89,12 +110,8 @@ namespace DefectStatisticsApp
             DrawLines(VertLinesDict["sigma+"], Brushes.Blue, 1);
             DrawLines(VertLinesDict["sigma-"], Brushes.Blue, 1);
 
-
             //Отрисовка графика нормального распределения вероятностей
-            var graphColor = Brushes.Green;
-            int graphThickness = 2;
-
-            for (int i = 0; i < GraphArr.Length-1; i++)
+            for (int i = 0; i < GraphArr.Length - 1; i++)
             {
                 Line line = new Line
                 {
@@ -105,7 +122,6 @@ namespace DefectStatisticsApp
                     Stroke = graphColor,
                     StrokeThickness = graphThickness
                 };
-
                 Canvas.Children.Add(line);
             }
         }
@@ -119,9 +135,13 @@ namespace DefectStatisticsApp
         {
             if ((e.Key == Key.Enter) && e.IsDown)
             {
-                if (sender is TextBox)
+                if (sender is TextBox tb)
                 {
-                    MessageBox.Show("Hellou");
+                    BindingExpression binding = tb.GetBindingExpression(TextBox.TextProperty);
+                    if (binding != null)
+                    {
+                        binding.UpdateSource();
+                    }
                 }
             }
         }
@@ -147,7 +167,25 @@ namespace DefectStatisticsApp
             pos.X -= GraphWidth/2; 
             pos.Y = -(pos.Y - GraphHeight / 2);
             Offset = pos;
-            //PropertyChanged?.Invoke(this, new("offset"));
+            TxbOffsetX = pos.X.ToString();
+            TxbOffsetY = pos.Y.ToString();
+
+        }
+
+        /// <summary>
+        /// Обновляет надписи о проценте брака
+        /// </summary>
+        public void updateDefectText()
+        {
+            LbDefects.Content
+                = $"Статус графика: Процент годных деталей: {Pnorm * 100:F2}%"
+                + $"\nПроцент исправимого брака: {PEs * 100:F2}%"
+                + $"\nПроцент неисправимого брака: {PEi * 100:F2}%";
+        }
+
+        public void CalcNoEiPC()
+        {
+            CalcNoEi();
         }
     }
 }

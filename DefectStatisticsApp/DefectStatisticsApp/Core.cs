@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System;
 
 
 namespace DefectStatisticsApp
@@ -14,65 +15,94 @@ namespace DefectStatisticsApp
         private const double pi = Math.PI;
 
         private double scale1 = 10000;
-        private double ei1 = 0.002;
-        private double es1 = 0.035;
-        private double xAvg1 = 0.014;
-        private double sigma1 = 0.009;
+        private double ei1 = 0.006;
+        private double es1 = 0.055;
+        private double xAvg1 = 0.026;
+        private double sigma1 = 0.012;
         private Point origin1;
         private Point[] graphArr1 = [];
         private Dictionary<string, Point[]> vertLinesDict1 = new();
         private double graphWidth;
         private double graphHeight;
         private Point offset1 = new Point(-300.0, -200.0);
+        private Point[] eiZoneArr = [];
+        private Point[] esZoneArr = [];
+        private double pEs;
+        private double pEi;
+        private double pnorm;
 
-        //
-        protected double Ei
+        //Граница неисправимого брака
+        public double Ei
         {
             get => ei1; set
             {
                 if (ei1 != value)
                 {
-                    ei1 = value;
+                    try
+                    {
+                        ei1 = Convert.ToDouble(value);
+                    }
+                    catch { MessageBox.Show("Введите число!"); }
                     OnPropertyChanged();
+                    CalcDefects();
+                    DefectsChanged?.Invoke();
                 }
             }
         }
 
-        //
-        protected double Es
+        //Граница исправимого брака
+        public double Es
         {
             get => es1; set
             {
                 if (es1 != value)
                 {
-                    es1 = value;
+                    try
+                    {
+                        es1 = Convert.ToDouble(value);
+                    }
+                    catch { MessageBox.Show("Введите число!"); }
                     OnPropertyChanged();
+                    CalcDefects();
+                    DefectsChanged?.Invoke();
                 }
             }
         }
 
         //Математическое ожидание
-        protected double XAvg
+        public double XAvg
         {
             get => xAvg1; set
             {
                 if (xAvg1 != value)
                 {
-                    xAvg1 = value;
+                    try
+                    {
+                        xAvg1 = Convert.ToDouble(value);
+                    }
+                    catch { MessageBox.Show("Введите число!"); }
                     OnPropertyChanged();
+                    CalcDefects();
+                    DefectsChanged?.Invoke();
                 }
             }
         }
 
         //Стандартное отклонение
-        protected double Sigma
+        public double Sigma
         {
             get => sigma1; set
             {
                 if (sigma1 != value)
                 {
-                    sigma1 = value;
+                    try
+                    {
+                        sigma1 = Convert.ToDouble(value);
+                    }
+                    catch { MessageBox.Show("Введите число!"); }
                     OnPropertyChanged();
+                    CalcDefects();
+                    DefectsChanged?.Invoke();
                 }
             }
         }
@@ -91,7 +121,7 @@ namespace DefectStatisticsApp
         }
 
         //Смещение начала координат
-        protected Point Offset
+        public Point Offset
         {
             get => offset1; set
             {
@@ -100,6 +130,29 @@ namespace DefectStatisticsApp
                     offset1 = value;
                     OnPropertyChanged();
                 }
+            }
+        }
+
+        public string TxbOffsetX
+        {
+            get => Offset.X.ToString(); set
+            {
+                try
+                {
+                    Offset = new Point(Convert.ToDouble(value), Offset.Y);
+                }
+                catch { MessageBox.Show("Введите число!"); }
+            }
+        }
+        public string TxbOffsetY
+        {
+            get => Offset.Y.ToString(); set
+            {
+                try
+                {
+                    Offset = new Point(Offset.X, Convert.ToDouble(value));
+                }
+                catch { MessageBox.Show("Введите число!"); }
             }
         }
 
@@ -134,6 +187,53 @@ namespace DefectStatisticsApp
             {
                 vertLinesDict1 = value;
                 PointsChanged?.Invoke();
+            }
+        }
+
+        //Массив граничных точек зоны неисправимого брака
+        protected Point[] EiZoneArr
+        {
+            get => eiZoneArr; set
+            {
+                eiZoneArr = value;
+                PointsChanged?.Invoke();
+            }
+        }
+
+        //Массив граничных точек зоны исправимого брака
+        protected Point[] EsZoneArr
+        {
+            get => esZoneArr; set
+            {
+                esZoneArr = value;
+                PointsChanged?.Invoke();
+            }
+        }
+
+        //Доля неисправимого брака
+        protected double PEi
+        {
+            get => pEi; set
+            {
+                pEi = value;
+            }
+        }
+
+        //Доля исправимого брака
+        protected double PEs
+        {
+            get => pEs; set
+            {
+                pEs = value;
+            }
+        }
+
+        //Доля годных деталей
+        protected double Pnorm
+        {
+            get => pnorm; set
+            {
+                pnorm = value;
             }
         }
 
@@ -173,8 +273,16 @@ namespace DefectStatisticsApp
             CalcAll();
         }
 
+        protected delegate void DefectChangeHandler();
+
+        //Событие, вызываемое при изменени основных коэффициентов (Es, Ei, sigma, XAvg).
+        //Используется для перерисовки процента брака
+        protected event DefectChangeHandler? DefectsChanged;
+
         protected delegate void PointsChangeHandler();
 
+        //Событие, вызываемое при изменени массивов точек графика.
+        //Используется для перерисовки графика
         protected event PointsChangeHandler? PointsChanged;
 
         /// <summary>
@@ -235,18 +343,92 @@ namespace DefectStatisticsApp
         /// <param name="precision">Гладкость графика</param>
         private void CalcGraph(double precision=0.0001)
         {
-            //Создаём пустой динамический список
-            List<Point> list = new();
+            //Создаём пустые динамические списки
+            List<Point> tempGraphPtsList = new();
+            List<Point> tempEi = new();
+            List<Point> tempEs = new();
 
-            //Заполняем список точками графика
+            //Заполняем списки точками графика
             for (double x = -Sigma*3+XAvg; x <= Sigma*3+XAvg; x+=precision)
             {
-                list.Add(new Point(x * Scale + Origin.X + Offset.X,
-                                   -CalcPhi(x) * Scale/1000 + Origin.Y - Offset.Y));
+                Point currPt = new Point(x * Scale + Origin.X + Offset.X,
+                                        -CalcPhi(x) * Scale / 1000 + Origin.Y - Offset.Y);
+                tempGraphPtsList.Add(currPt);
+
+                if (x <= Ei)
+                {
+                    tempEi.Add(currPt);
+                }
+
+                if (x >= Es)
+                {
+                    tempEs.Add(currPt);
+                }
             }
 
-            //Конвертируем его в массив и сохраняем
-            GraphArr = list.ToArray();
+            //Проецируем на ось Х граничные точки частей графика над зонами брака
+            if (tempEi.Any()) 
+            {
+                tempEi.Add(new Point(tempEi.Last().X, VertLinesDict["ox"][0].Y));
+                tempEi.Add(new Point(tempEi.First().X, VertLinesDict["ox"][0].Y));
+            }
+
+            if (tempEs.Any())
+            {
+                tempEs.Add(new Point(tempEs.Last().X, VertLinesDict["ox"][0].Y));
+                tempEs.Add(new Point(tempEs.First().X, VertLinesDict["ox"][0].Y));
+            }
+
+            //Конвертируем их в массивы и сохраняем
+            GraphArr = tempGraphPtsList.ToArray();
+            EiZoneArr = tempEi.ToArray();
+            EsZoneArr = tempEs.ToArray();
+        }
+
+        /// <summary>
+        /// Расчёт процента брака
+        /// </summary>
+        protected void CalcDefects()
+        {
+            Pnorm = F( (Ei - XAvg)/Sigma, (Es - XAvg)/Sigma );
+            PEi = F( -3 ,(Ei - XAvg)/Sigma );
+            PEs = F( (Es - XAvg)/Sigma, 3 );
+        }
+
+        /// <summary>
+        /// Подинтегральная функция
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        private double Y(double t)
+        {
+            return Math.Pow(e, -t*t/2);
+        }
+
+        /// <summary>
+        /// Вычисляет определённый интеграл по методу Симпсона
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        private double F(double a, double b)
+        {
+            double x, h, s;
+            double n = 1000000; //точность вычислений
+
+            h = (b - a) / n;
+            s = 0; 
+            x = a + h;
+            while (x < b)
+            {
+                s += 4 * Y(x);
+                x += h;
+                s += 2 * Y(x);
+                x += h;
+            }
+            s = h / 3 * (s + Y(a) - Y(b));
+
+            return s / Math.Sqrt(2 * pi);
         }
 
         /// <summary>
@@ -267,6 +449,14 @@ namespace DefectStatisticsApp
 
             //Считаем и записываем точки графика нормального распределения
             CalcGraph();
+        }
+
+        /// <summary>
+        /// Смещает мат. ожидание до минимального значения, при котором процент неисправимого брака будет равен 0
+        /// </summary>
+        protected void CalcNoEi()
+        {
+            XAvg = Math.Round(XAvg - (XAvg - 3 * Sigma - Ei), 3);
         }
     }
 }

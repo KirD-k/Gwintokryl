@@ -35,23 +35,23 @@
                         Background="BlanchedAlmond">
                 <Label Content="ei"/>
                 <TextBox x:Name="txbEI" 
-                         Text="{Binding Path=TxbEI}"/>
+                         Text="{Binding Path=Ei}"/>
                 
                 <Label Content="es"/>
                 <TextBox x:Name="txbES" 
-                         Text="{Binding Path=TxbES}"/>
+                         Text="{Binding Path=Es}"/>
                 
                 <Label Content="sigma"/>
                 <TextBox x:Name="txbSigma" 
-                         Text="{Binding Path=TxbSigma}"/>
+                         Text="{Binding Path=Sigma}"/>
                 
                 <Label Content="Мат. ожидание"/>
                 <TextBox x:Name="txbXavg" 
-                         Text="{Binding Path=TxbXAvg}"/>
+                         Text="{Binding Path=XAvg}"/>
 
                 <TextBlock Margin="10 10 10 0"
-                           Text="Сдвиг центра координат по осям" 
-                           Height="40"
+                           Text="Сдвиг центра координат по осям:" 
+                           TextWrapping="Wrap"
                            
                            />
                 <Label Content="X"/>
@@ -61,16 +61,22 @@
                 <Label Content="Y"/>
                 <TextBox x:Name="txbOffsetY"
                          Text="{Binding Path=TxbOffsetY}"/>
+                <Button x:Name="btnCalcNoEi"
+                        Margin="10 20">
+                    <TextBlock Text="Устранить неисправимый брак"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"/>
+                </Button>
 
             </StackPanel>
 
-            <Rectangle Grid.Column="2" Grid.Row="0" 
+            <!--<Rectangle Grid.Column="2" Grid.Row="0" 
                        Fill="PaleTurquoise">
 
-            </Rectangle>
+            </Rectangle>-->
 
             <Canvas x:Name="graphCanvas" 
-                    Grid.Column="1" Grid.Row="1"
+                    Grid.Column="1" Grid.RowSpan="2"
                     Panel.ZIndex="-1"
                     Background="AliceBlue"/>
             
