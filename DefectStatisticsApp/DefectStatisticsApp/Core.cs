@@ -42,7 +42,7 @@ namespace DefectStatisticsApp
                     {
                         ei1 = Convert.ToDouble(value);
                     }
-                    catch { MessageBox.Show("Введите число!"); }
+                    catch {  }
                     OnPropertyChanged();
                     CalcDefects();
                     DefectsChanged?.Invoke();
@@ -61,7 +61,7 @@ namespace DefectStatisticsApp
                     {
                         es1 = Convert.ToDouble(value);
                     }
-                    catch { MessageBox.Show("Введите число!"); }
+                    catch {  }
                     OnPropertyChanged();
                     CalcDefects();
                     DefectsChanged?.Invoke();
@@ -80,7 +80,7 @@ namespace DefectStatisticsApp
                     {
                         xAvg1 = Convert.ToDouble(value);
                     }
-                    catch { MessageBox.Show("Введите число!"); }
+                    catch {  }
                     OnPropertyChanged();
                     CalcDefects();
                     DefectsChanged?.Invoke();
@@ -99,7 +99,7 @@ namespace DefectStatisticsApp
                     {
                         sigma1 = Convert.ToDouble(value);
                     }
-                    catch { MessageBox.Show("Введите число!"); }
+                    catch {  }
                     OnPropertyChanged();
                     CalcDefects();
                     DefectsChanged?.Invoke();
@@ -141,7 +141,7 @@ namespace DefectStatisticsApp
                 {
                     Offset = new Point(Convert.ToDouble(value), Offset.Y);
                 }
-                catch { MessageBox.Show("Введите число!"); }
+                catch { }
             }
         }
         public string TxbOffsetY
@@ -152,7 +152,7 @@ namespace DefectStatisticsApp
                 {
                     Offset = new Point(Offset.X, Convert.ToDouble(value));
                 }
-                catch { MessageBox.Show("Введите число!"); }
+                catch { }
             }
         }
 

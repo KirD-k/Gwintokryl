@@ -178,7 +178,7 @@ namespace DefectStatisticsApp
         public void updateDefectText()
         {
             LbDefects.Content
-                = $"Статус графика: Процент годных деталей: {Pnorm * 100:F2}%"
+                = $"Процент годных деталей: {Pnorm * 100:F2}%"
                 + $"\nПроцент исправимого брака: {PEs * 100:F2}%"
                 + $"\nПроцент неисправимого брака: {PEi * 100:F2}%";
         }

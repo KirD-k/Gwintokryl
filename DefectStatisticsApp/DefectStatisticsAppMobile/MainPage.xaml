@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DefectStatisticsAppMobile.MainPage">
+
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.15*"/>
+                <ColumnDefinition Width="0.85*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.1*"/>
+                <RowDefinition Height="0.8*"/>
+                <RowDefinition Height="0.1*"/>
+            </Grid.RowDefinitions>
+
+            <StackLayout Grid.Column="0" Grid.RowSpan="3"
+                        x:Name="myPanel"
+                        Padding="10"
+                        Background="BlanchedAlmond">
+                <Label Text="Граница допуска εi"/>
+                <Entry x:Name="txbEI" 
+                               Text="{Binding Path=Ei}"/>
+
+                <Label Text="Граница допуска εs"/>
+                <Entry x:Name="txbES" 
+                               Text="{Binding Path=Es}"/>
+
+                <Label Text="Стандартное отклонение σ"/>
+                <Entry x:Name="txbSigma" 
+                               Text="{Binding Path=Sigma}"/>
+
+                <Label Text="Мат. ожидание x̅"/>
+                <Entry x:Name="txbXavg" 
+                               Text="{Binding Path=XAvg}"/>
+
+                <Label Margin="10"
+                               Text="Сдвиг центра координат по осям:"/>
+                <Label Text="X"/>
+                <Entry x:Name="txbOffsetX"
+                               Text="{Binding Path=TxbOffsetX}"/>
+
+                <Label Text="Y"/>
+                <Entry x:Name="txbOffsetY"
+                               Text="{Binding Path=TxbOffsetY}"/>
+
+                <Button x:Name="btnCalcNoEi"
+                        BackgroundColor="LightGrey"
+                        TextColor="Black"
+                        BorderColor="Gray"
+                        BorderWidth="1"
+                        Text="Устранить неисправимый брак"
+                        LineBreakMode="WordWrap"
+                        HorizontalOptions="Center">
+                </Button>
+
+            </StackLayout>
+
+            <GraphicsView x:Name="graphCanvas" 
+                    Grid.Column="1" Grid.RowSpan="2"
+                    ZIndex="-1"
+                    Background="AliceBlue">
+                <GraphicsView.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnGraphTapped"/>
+                    <PinchGestureRecognizer PinchUpdated="OnPinchUpdated"/>
+                </GraphicsView.GestureRecognizers>
+            </GraphicsView>
+
+            <Rectangle Grid.Column="2" Grid.Row="2" 
+                       Fill="LightGray">
+
+            </Rectangle>
+            <Label Grid.Column="1" Grid.Row="2"
+                           x:Name="lbGraphStatus"
+                           Text=""
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Center"/>
+
+
+
+        </Grid>
+    </Grid>
+
+
+</ContentPage>

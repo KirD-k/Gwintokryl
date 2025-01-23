@@ -33,19 +33,19 @@
             <StackPanel Grid.Column="0" Grid.RowSpan="3"
                         x:Name="myPanel"
                         Background="BlanchedAlmond">
-                <Label Content="ei"/>
+                <Label Content="Граница допуска εi"/>
                 <TextBox x:Name="txbEI" 
                          Text="{Binding Path=Ei}"/>
-                
-                <Label Content="es"/>
+
+                <Label Content="Граница допуска εs"/>
                 <TextBox x:Name="txbES" 
                          Text="{Binding Path=Es}"/>
-                
-                <Label Content="sigma"/>
+
+                <Label Content="Стандартное отклонение σ"/>
                 <TextBox x:Name="txbSigma" 
                          Text="{Binding Path=Sigma}"/>
-                
-                <Label Content="Мат. ожидание"/>
+
+                <Label Content="Мат. ожидание x̅"/>
                 <TextBox x:Name="txbXavg" 
                          Text="{Binding Path=XAvg}"/>
 
@@ -86,7 +86,7 @@
             </Rectangle>
             <Label Grid.Column="1" Grid.Row="2"
                    x:Name="lbGraphStatus"
-                   Content="Статус графика"
+                   Content=""
                    VerticalAlignment="Center"
                    HorizontalAlignment="Left"/>
 
